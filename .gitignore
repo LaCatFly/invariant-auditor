@@ -1,0 +1,48 @@
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Foundry / Hardhat build artifacts
+out/
+cache/
+broadcast/
+
+# Security Scanners temporary files
+slither.json
+slither-report.json
+triage_candidates.json
+recon_output.json
+
+# Audit outputs and generated artifacts
+output/
+
+# Environment and secrets
+.env
+.env.local
+*.pem
+*.key

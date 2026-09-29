@@ -1,0 +1,41 @@
+name: Mirror to Satellite Repositories
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - skill: recon-triage
+            repo: recon-triage
+          - skill: transaction-tracer
+            repo: transaction-tracer
+          - skill: boundary-sensitivity
+            repo: boundary-sensitivity
+          - skill: poc-engine
+            repo: poc-engine
+    steps:
+      - name: Checkout Monorepo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Mirror ${{ matrix.skill }} to ${{ matrix.repo }}
+        # Only executes when SATELLITE_SYNC_TOKEN secret is configured
+        if: "${{ env.SATELLITE_SYNC_TOKEN != '' }}"
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.SATELLITE_SYNC_TOKEN }}
+          SATELLITE_SYNC_TOKEN: ${{ secrets.SATELLITE_SYNC_TOKEN }}
+        with:
+          source-directory: '${{ matrix.skill }}'
+          destination-github-username: '${{ github.repository_owner }}'
+          destination-repository-name: '${{ matrix.repo }}'
+          target-branch: main
